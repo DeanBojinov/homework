@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace de_dust
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string lane = Console.ReadLine();
+            char a, b;
+            int count = 2;
+            string keep = "";
+            int radius = 0;
+            int startP = 0;
+            int endP = 0;
+            char[] massive = new char[lane.Length];
+            for (int i = 0; i < lane.Length; i++)
+            {
+                massive[i] = lane[i];
+            }
+            for (int i = 0; i < lane.Length; i++)
+            {
+                a = lane[i];
+                if (a == '|')
+                {
+                    i++;
+                    while (true)
+                    {
+                        a = lane[i];
+                        if (a == '|')
+                        {
+                            break;
+                        }
+                        keep += a;
+                        count++;
+                        i++;
+                    }
+                    radius = bombRadius(keep);
+                    radius += count;
+                    startP = i - radius;
+                    radius = (radius - count) * 2 + count;
+                    endP = startP + radius;
+                    if (startP < 0)
+                    {
+                        startP = -1;
+                    }
+                    if (endP >= lane.Length)
+                    {
+                        endP = lane.Length - 1;
+                    }
+                    massive = destruction(startP, endP, massive);
+                    i++;
+                }
+                count = 2;
+                keep = "";
+            }
+            Console.WriteLine();
+            for (int i = 0; i < massive.Length; i++)
+            {
+                Console.Write(massive[i]);
+            }
+            Console.WriteLine();
+        }
+
+        static int bombRadius(string keep)
+        {
+            int sum = 0;
+            char a;
+            for (int i = 0; i < keep.Length; i++)
+            {
+                a = keep[i];
+                sum += (int)a;
+            }
+            string ss = Convert.ToString(sum);
+            a = ss[ss.Length - 1];
+            int result = int.Parse(a.ToString());
+            return result;
+        }
+
+        static char[] destruction(int startP, int endP, char[] massive)
+        {
+            for (int i = startP + 1; i <= endP; i++)
+            {
+                massive[i] = '.';
+            }
+            return massive;
+        }
+    }
+}
