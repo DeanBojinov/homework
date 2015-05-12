@@ -1,0 +1,145 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace rotate_matrix
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //really i hate to work with matrix :D
+            string command = Console.ReadLine();
+            int num = 0;
+            Regex re = new Regex(@"\d+");
+            Match match = re.Match(command);
+            if (match.Success)
+            {
+                num = int.Parse(match.Value);
+            }
+            int position = -1;
+            int number = 0;
+            while (number<=num)
+            {
+                number += 90;
+                position++;
+                if (position==4)
+                {
+                    position = 0;
+                }
+            }
+            List<string> list = new List<string>();
+            int count = 0;
+            int count1 = 0;
+            while (true)
+            {
+                string lane = Console.ReadLine();
+                count = lane.Length;
+                if (lane=="END")
+                {
+                    break;
+                }
+                if (count1<count)
+                {
+                    count1 = count;
+                }
+                list.Add(lane);
+            }
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                while (list[i].Length<count1)
+                {
+                    list[i] += " ";
+                }
+            }
+            if (position==1)
+            {
+                list.Reverse();
+                char[,] matrix = new char[count1, list.Count];
+                for (int row = 0; row < count1; row++)
+                {
+                    for (int col = 0; col < list.Count; col++)
+                    {
+                        matrix[row, col] = list[col][row];
+                    }
+                }
+                for (int i = 0; i < count1; i++)
+                {
+                    for (int j = 0; j < list.Count; j++)
+                    {
+                        Console.Write(matrix[i,j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else if (position==2)
+            {
+                count = 0;
+                char[,] matrix = new char[list.Count,count1];
+                list.Reverse();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    for (int j = count1-1; j >= 0; j--)
+                    {
+                        matrix[i, count] = list[i][j];
+                        count++;
+                    }
+                    count = 0;
+                }
+                for (int i = 0; i < list.Count; i++)
+                {
+                    for (int j = 0; j < count1; j++)
+                    {
+                        Console.Write(matrix[i,j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else if (position==3)
+            {
+                count = 0;
+                char[,] matrix = new char[count1, list.Count];
+                for (int row = count1-1; row >=0; row--)
+                {
+                    for (int col = 0; col < list.Count; col++)
+                    {
+                        matrix[count, col] = list[col][row];
+                    }
+                    count++;
+                }
+                for (int i = 0; i < count1; i++)
+                {
+                    for (int j = 0; j < list.Count; j++)
+                    {
+                        Console.Write(matrix[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                char[,] matrix = new char[list.Count,count1];
+                for (int i = 0; i < list.Count; i++)
+                {
+                    for (int j = 0; j < count1; j++)
+                    {
+                        matrix[i, j] = list[i][j];
+                    }
+                }
+                for (int i = 0; i < list.Count; i++)
+                {
+                    for (int j = 0; j < count1; j++)
+                    {
+                        Console.Write(matrix[i,j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+        }
+    }
+}
+
